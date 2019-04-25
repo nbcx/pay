@@ -1,0 +1,22 @@
+{
+    "name": "nbcx/pay",
+    "description":"Pay for PHP",
+    "keywords":["pay","weixin","alipay","apple"],
+    "type":"library",
+    "license":"MIT",
+    "authors":[
+        {
+            "name":"Collin",
+            "email": "collin@nb.cx",
+            "homepage":"http://nb.cx"
+        }
+    ],
+    "homepage": "https://nb.cx",
+    "autoload": {
+        "psr-0": { "nbcx\\pay": "src/" }
+    },
+    "require":{
+        "php":">=5.4.9",
+        "nbcx/framework": "dev-master"
+    }
+}
