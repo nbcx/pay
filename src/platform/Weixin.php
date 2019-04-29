@@ -1,6 +1,8 @@
 <?php
 namespace nbcx\pay\platform;
 
+use nbcx\pay\IPay;
+
 /**
  *
  * User: Collin
@@ -10,16 +12,16 @@ namespace nbcx\pay\platform;
 class Weixin extends IPay {
 
     //APPID：绑定支付的APPID（必须配置，开户邮件中可查看）
-    public $appid = 'wxbccf7a23f2b304bc';
+    public $appid;
 
     //商户号（必须配置，开户邮件中可查看）
-    public $mchid = '1370158702';
+    public $mchid;
 
     //KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
-    public $key = 'MIICdgIBADANBgkqhkiG9w0BAQEFAASC';
+    public $key;
 
     //公众帐号secert（仅JSAPI支付的时候需要配置， 登录公众平台，进入开发者中心可设置），
-    public $appsecret = '7813490da6f1265e4901ffb80afaa36f';
+    public $appsecret;
 
 
     //随机字符串

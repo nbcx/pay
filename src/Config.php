@@ -7,29 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace nbcx\pay;
+
 /**
- * Pay
+ * Config
  *
  * @link https://nb.cx
  * @author: collin <collin@nb.cx>
- * @date: 2019/4/26
+ * @date: 2019/4/29
  */
-class Pay {
+class Config {
 
-    //支付平台
-    public function setPlatform() {
-
-    }
-
-    public function setType() {
+    public function index() {
 
     }
-
-    public function unifiedOrder() {
-
-    }
-
-
 
 }

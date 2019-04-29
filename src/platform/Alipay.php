@@ -10,13 +10,13 @@ namespace nbcx\pay\platform;
 class Alipay extends IPay {
 
     //应用ID
-    public $appId='2016072101646960';
+    public $appId;
 
     //私钥文件路径
     public $rsaPrivateKeyFilePath;
 
     //私钥值
-    public $rsaPrivateKey='MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCgjROZf1fGUR0ZJNLjF+YC4+srYDgNMqvnoB4tAgQq/MJdHXWNfrQcpW03NQpruSU72xjMDmRP9d21Bn7MlrWXACWm2waBVUXsd9CyiC+p4uJBeQkcRT7bS2UyHbVx2Q9r68VAZ6bqHVMMeWwiQv8tjm0XaIbILNZOOi3ClUJYK24ZkxLaBDSUdJC5ZQpwhfZsf6X5sVMxuILIl49st5yki271wOjdnxoLrKeUKpaCgWhntFLiuQBs0c6QtC1VF4mq6RzDq66ymmpz7t+bHDyz+GYs04Cw5r4issj1Dw54f8PIInj3snkRsTUS9oF1AjOpkp3uUTHw4O71Muh0A+MrAgMBAAECggEALAH/mVeai7W4MCgz1iO63Jf04lLhilyVWkw9eUDQO6hE7pkgm8RbQm7l3Pgg/x4k4p9P0L8xJ+nQ98nr/9BfviBAMdhflBv3qrW88vL5fau/MQsoQCOK8zlbZ71U+vvwijh6PQksa4fWN9kgltOedrJPnNb9+uivZYn0+R1IrjnolYamB48o5zYY4mKrStZt0bqJBhX7NuStOvjCiEthMxH/oY5X+v0sqHfYDI97uJDnJX9S4h91aSUScBrJzqoPVrNOFgjudM2rbKgkObQOfvTiL6lZaJ2Hfi0OJ+/KYAd6r8sGyxYC2ecxcSztdU7xwjL9RZlSjs1ObcnTjr2mAQKBgQDwZUQu+rLmDTaO5CdMjLmnyuJLWMZXX20/vIigBuXM9lE/r8jcBZ5pixrGPSjMk/E08ypj3ugBV9eQzYHEXz/KWnetQI/spNUZxfWbptMJ+UvEvhgB5foLWe+56NEbZsKgiPiIORx+AECmrefytpf5+8yurG7XYukM7/Iq+5tRawKBgQCq+QHxSyZvGaPQHpw6iKA8C85WWDJGmMeVXUJUkBamQvWSWcceqqs/RWTImEgu8Lhy+rA78r05Gi+3RqDMH+msuG+LFRtaHN/uqJCJ3tlMc5m/EPghkKAy7lGs3+xJ1Ixci4X2le5r72E7VhadTf/fBySfut1HOpMyv+Bxa59lQQKBgQDiMGZXTcvGaehLyqCvhjmph1wlSQJWc5N3xQ1IhTT0BU+tfNihLShAZoJqxGD/HLR3/dSE49eoa96IgNT40CZVX4n7miPRpcZc2cafDfjECa0hETvFjX4X8Cd/5W/bOHUoV7iBdDs600IBkuALn4Kf1CxirhwczRQ6+AoEJ3mcwQKBgHnaBlxmZvn/mBSX/FhrT2f8Mg6vxQUzlesKEGAcYUgVqNepTJS6plntpyqf/bIWth6cNEZFdj7gPumsWKWiiPQkbrr9TAUpVx/M21ankM9ABG98NJwXa1VhLKy82raz2WWLuupHaSlb7jxP2sY59QaLHLsKfvJo+MfOoLO1NGEBAoGAPxT4eWy2xT6sp1LWVve8kU7bKi2xGm6HBNKhjJvm1pXhIB7SMR/vG8Lo4gVBE12mQOTXf6JTEw6ahtkoB8tFtSaQZK5GFsSoV3p2QFhGZpa6qjUjBLkEQpqXaYMzBIQZJlIVM068JqM6h82aPvRTclUtYu5AXxDPQb7pMlgiMD8=';
+    public $rsaPrivateKey;
 
     //网关
     public $gatewayUrl = "https://openapi.alipay.com/gateway.do";
@@ -31,10 +31,10 @@ class Alipay extends IPay {
     public $postCharset = "UTF-8";
 
     //请填写开发者私钥去头去尾去回车，一行字符串
-    public $alipayPublicKey  = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB';
+    public $alipayPublicKey;
 
     //请填写支付宝公钥，一行字符串
-    public $alipayrsaPublicKey='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5ovcREDZenYbrt9ZhNGhFq3h0F+x7bAQ35QCrMpedIjXU4UKwHlOQ42Az8HMITxA1G43+PfidgS4ODhHKP38vyFL3vZZ2f6a1rP9LavoIdzterxCc3bCdTAzCSnqCSyLybrxBOy6xPeqNAF9uz5KGsvqORhtgvDYwETWytSxxq7D3D6tQN1XicUtRDeqI+T0JthwzoajhQ2vGwwSMNH2beft2zl8Rux767mV5FX13sCgiwo+4C5KCGSCDZ9DQjTPQzxDW/svADYe4Xmnjs2n0pD+JsLjhwVoDATfibmc22QfglthLCbjYR4qTl4H9XnmiYfErNUwpRtfHHBS1xCvVQIDAQAB';
+    public $alipayrsaPublicKey;
 
 
     public $debugInfo = false;
