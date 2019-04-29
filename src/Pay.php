@@ -34,9 +34,9 @@ class Pay {
     }
 
 
-    public function unifiedOrder() {
+    public function unifiedOrder($type,$param) {
         $ipay = new Weixin($this->config);
-        $result = $ipay->unifiedOrder();
+        $result = $ipay->unifiedOrder($type,$param);
 
         if($result) {
             return $result;
