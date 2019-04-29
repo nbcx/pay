@@ -18,8 +18,7 @@ namespace nbcx\pay;
  */
 abstract class IPay {
 
-    public function index() {
-
-    }
+    public $errno;
+    public $errmsg;
 
 }

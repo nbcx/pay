@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 namespace nbcx\pay;
+use nbcx\pay\platform\Weixin;
+
 /**
  * Pay
  *
@@ -17,17 +19,33 @@ namespace nbcx\pay;
  */
 class Pay {
 
+    public $errno;
+    public $errmsg;
+
+    protected $config;
+
     //支付平台
     public function setPlatform() {
 
     }
 
-    public function setType() {
-
+    public function set($config) {
+        $this->config = $config;
     }
 
-    public function unifiedOrder() {
 
+    public function unifiedOrder() {
+        $ipay = new Weixin($this->config);
+        $result = $ipay->unifiedOrder();
+
+        if($result) {
+            return $result;
+        }
+
+        $this->errno = $this->errno;
+        $this->errmsg = $ipay->errmsg;
+
+        return false;
     }
 
 

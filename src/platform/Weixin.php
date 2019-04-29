@@ -29,6 +29,19 @@ class Weixin extends IPay {
 
     public $trade_type = 'APP';
 
+
+    private $config;
+
+    public function __construct($config) {
+        $this->config = $config;
+
+        //TODO
+        $this->appid = $config['appid'];
+        $this->mchid = $config['mchid'];
+        $this->key = $config['key'];
+        $this->appsecret = $config['appsecret'];
+    }
+
     /**
      *
      * 统一下单，WxPayUnifiedOrder中out_trade_no、body、total_fee、trade_type必填
@@ -38,35 +51,9 @@ class Weixin extends IPay {
      * @throws WxPayException
      * @return 成功时返回，其他抛异常
      */
-    public function unifiedOrder($goods,$type,$ext=null) {
-        //APP支付
-        //用于APP端
-        if($type == 2 || $type==4) {
-            $this->trade_type='APP';
-        }
-        //扫码支付
-        //用于PC端
-        if($type==1) {
-            $this->trade_type='NATIVE';
-        }
-        //H5支付
-        //用于手机web端
-        if($type==3) {
-            if(isset($ext['trade']) && $ext['trade']='JSAPI') {
-                //公众号支付
-                $this->trade_type='JSAPI';
-            }
-            else {
-                $this->trade_type='MWEB';
-                $param['scene_info']= json_encode([
-                    'h5_info'=>[
-                        'type'=>'Wap',
-                        'wap_url'=>'http://www.lookmanhua.com/',
-                        'wap_name'=>'撸卡漫画'
-                    ]
-                ]);
-            }
-        }
+    public function unifiedOrder($type,$param) {
+        $this->trade_type = $type;
+
         $timeOut = 6;
         $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         //应用ID
@@ -76,15 +63,15 @@ class Weixin extends IPay {
         //随机字符串
         $param['nonce_str'] = $this->nonce_str;
         //商品描述
-        $param['body'] = $goods['name'];
+        //$param['body'] = $goods['name'];
         //商户订单号
-        $param['out_trade_no'] = $goods['orderid'];
+        //$param['out_trade_no'] = $goods['orderid'];
         //总金额，单位分
-        $param['total_fee'] = $goods['price'];
+        //$param['total_fee'] = $goods['price'];
         //终端IP
-        $param['spbill_create_ip'] = $ext['ip'];//'180.173.208.249';
+        //$param['spbill_create_ip'] = $ext['ip'];//'180.173.208.249';
         //通知地址
-        $param['notify_url'] = 'http://member.qa.lookmanhua.com/notify/weixin';
+        //$param['notify_url'] = 'http://member.qa.lookmanhua.com/notify/weixin';
         //交易类型
         $param['trade_type'] = $this->trade_type;
         //签名
@@ -102,6 +89,9 @@ class Weixin extends IPay {
             $this->errmsg = $response['err_code_des'];
             return false;
         }
+
+        return $response;
+        /*
         if($type==2 || $type==4) {
             $app['appid']=$this->appid;
             $app['partnerid']=$this->mchid;
@@ -113,6 +103,7 @@ class Weixin extends IPay {
             return $app;
         }
         return $response;
+        */
     }
 
     public function orderQuery($orderid) {
