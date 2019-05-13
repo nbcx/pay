@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace nbcx\pay;
+
 use nbcx\pay\platform\Weixin;
 
 /**
@@ -34,7 +35,9 @@ class Pay {
     }
 
 
-    public function unifiedOrder($type,$param) {
+    public function unifiedOrder($platform,$type,$param) {
+
+
         $ipay = new Weixin($this->config);
         $result = $ipay->unifiedOrder($type,$param);
 
