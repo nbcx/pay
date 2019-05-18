@@ -9,6 +9,7 @@
  */
 namespace nbcx\pay;
 
+use nbcx\pay\platform\Base;
 use nbcx\pay\platform\Weixin;
 
 /**
@@ -20,11 +21,15 @@ use nbcx\pay\platform\Weixin;
  */
 class Pay {
 
+
     public $errno;
     public $errmsg;
 
     protected $config;
 
+    /**
+     * @var Base
+     */
     protected $platform;
 
     protected $input = [];
@@ -39,6 +44,11 @@ class Pay {
 
     public function config($config) {
         $this->config = $config;
+    }
+
+    public function request($input) {
+        $this->input = $input;
+        return $this;
     }
 
     public function type($name) {
@@ -71,6 +81,25 @@ class Pay {
         return false;
     }
 
+
+    public function get() {
+        if($this->platform == null) {
+            throw new \Error('connector is null');
+        }
+        $this->platform->request($this->input);
+        $this->platform->config($this->config);
+        $result =  $this->platform->get();
+
+        if($result) {
+            return $result;
+        }
+        return false;
+    }
+
+    public function __get($name) {
+        // TODO: Implement __get() method.
+        return $this->platform->$name;
+    }
 
 
 }

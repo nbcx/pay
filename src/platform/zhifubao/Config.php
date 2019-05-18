@@ -1,5 +1,7 @@
 <?php
 namespace nbcx\pay\platform\zhifubao;
+use nbcx\pay\platform\Base;
+
 /**
  *
  * User: Collin
@@ -7,7 +9,7 @@ namespace nbcx\pay\platform\zhifubao;
  * Date: 17/10/16 下午3:32
  */
 
-class Alipay extends IPay {
+abstract class Config extends Base {
 
     //应用ID
     public $appId;

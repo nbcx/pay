@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace nbcx\pay\platform\zhifubao;
+
 /**
  * UnifiedOrder
  *
@@ -16,7 +17,11 @@ namespace nbcx\pay\platform\zhifubao;
  * @author: collin <collin@nb.cx>
  * @date: 2019/5/13
  */
-class UnifiedOrder extends Alipay {
+class UnifiedOrder extends Config {
+
+    public function get() {
+        // TODO: Implement get() method.
+    }
 
     /**
      * @param $type 支付方式
@@ -24,7 +29,6 @@ class UnifiedOrder extends Alipay {
      * @return string
      */
     public function unifiedOrder($goods,$type,$ext=null) {
-
         $data = [
             'body' => $goods['name'],
             'subject' => $goods['name'],
