@@ -10,7 +10,6 @@
 namespace nbcx\pay;
 
 use nbcx\pay\platform\Base;
-use nbcx\pay\platform\Weixin;
 
 /**
  * Pay
@@ -19,40 +18,21 @@ use nbcx\pay\platform\Weixin;
  * @author: collin <collin@nb.cx>
  * @date: 2019/4/26
  */
-class Pay {
-
-
-    public $errno;
-    public $errmsg;
-
-    protected $config;
+class Pay extends Component {
 
     /**
      * @var Base
      */
     protected $platform;
 
-    protected $input = [];
-
     protected $name;
 
-    public function __construct($name,$type=null,$config=[]) {
+    public function __construct($name,$config=[]) {
         $this->name = $name;
         $this->config($config);
-        $type and $this->type($type);
-    }
-
-    public function config($config) {
-        $this->config = $config;
-    }
-
-    public function request($input) {
-        $this->input = $input;
-        return $this;
     }
 
     public function type($name) {
-        // TODO: Implement setType() method.
         if(strstr($name,"\\")) {
             $connector = new $name();
         }
@@ -60,34 +40,22 @@ class Pay {
             $type = ucfirst($name);
             $connector = "nbcx\\pay\\platform\\{$this->name}\\$type";
 
-            $connector = new $connector();
+            $connector = new $connector($this);
         }
-        $this->connector = $connector;
+        $this->platform = $connector;
         return $this;
     }
 
-    public function unifiedOrder($platform,$type,$param) {
-
-        $ipay = new Weixin($this->config);
-        $result = $ipay->unifiedOrder($type,$param);
-
-        if($result) {
-            return $result;
-        }
-
-        $this->errno = $this->errno;
-        $this->errmsg = $ipay->errmsg;
-
-        return false;
+    public function unifiedOrder($param) {
+        $this->type('unifiedOrder');
+        $this->config($param);
+        return $this->get();
     }
-
 
     public function get() {
         if($this->platform == null) {
-            throw new \Error('connector is null');
+            throw new \Error('platform is not exits');
         }
-        $this->platform->request($this->input);
-        $this->platform->config($this->config);
         $result =  $this->platform->get();
 
         if($result) {
@@ -100,6 +68,5 @@ class Pay {
         // TODO: Implement __get() method.
         return $this->platform->$name;
     }
-
 
 }

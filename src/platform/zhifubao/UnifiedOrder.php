@@ -21,6 +21,42 @@ class UnifiedOrder extends Config {
 
     public function get() {
         // TODO: Implement get() method.
+        $data = [
+            'body' => $this->goods_name,//$goods['name']
+            'subject' => $this->goods_name,
+            'out_trade_no' => $this->out_trade_no,//此订单号为商户唯一订单号
+            'total_amount' => $this->total_amount,//保留两位小数
+        ];
+        switch ($this->request['trade_type']) {
+            case 'app':
+                $result = $this->app($data);
+                break;
+            case 'pc':
+                $result = $this->pc($data);
+                break;
+            case 'h5':
+                $result = $this->h5($data);
+                break;
+        }
+        return $result;
+    }
+
+    //2&4
+    protected function app($data) {
+        $goods['product_code'] = 'QUICK_MSECURITY_PAY';
+        $result = $this->sdkExecute($data);
+        return $result;
+    }
+
+    protected function h5($data,$ext) {
+        $this->method='alipay.trade.wap.pay';
+        $result = $this->pageExecute($data,$ext);
+        return $result;
+    }
+
+    protected function pc($data) {
+        $this->method='alipay.trade.precreate';
+        return $this->execute($data);
     }
 
     /**
@@ -57,24 +93,6 @@ class UnifiedOrder extends Config {
         else {
             echo "失败";
         }
-    }
-
-    //2&4
-    protected function app($data) {
-        $goods['product_code'] = 'QUICK_MSECURITY_PAY';
-        $result = $this->sdkExecute($data);
-        return $result;
-    }
-
-    protected function h5($data,$ext) {
-        $this->method='alipay.trade.wap.pay';
-        $result = $this->pageExecute($data,$ext);
-        return $result;
-    }
-
-    protected function pc($data) {
-        $this->method='alipay.trade.precreate';
-        return $this->execute($data);
     }
 
 }

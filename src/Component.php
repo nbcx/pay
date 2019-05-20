@@ -7,18 +7,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace nbcx\pay;
 
 /**
- * Config
+ * IPay
  *
  * @link https://nb.cx
  * @author: collin <collin@nb.cx>
- * @date: 2019/4/29
+ * @date: 2019/4/25
  */
-class Config {
+abstract class Component {
 
-    public function index() {
+    public $errno;
+    public $errmsg;
 
+    protected $config = [];
+
+    public function config($config) {
+        $this->config = array_merge($this->config,$config);
     }
 
+    abstract public function get();
 }

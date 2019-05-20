@@ -28,82 +28,17 @@ abstract class Config extends Base {
 
     public $trade_type = 'APP';
 
+    //private $config;
 
-    private $config;
+    //public function __construct($config) {
+    //    $this->config = $config;
 
-    public function __construct($config) {
-        $this->config = $config;
-
-        //TODO
-        $this->appid = $config['appid'];
-        $this->mchid = $config['mchid'];
-        $this->key = $config['key'];
-        $this->appsecret = $config['appsecret'];
-    }
-
-    /**
-     *
-     * 统一下单，WxPayUnifiedOrder中out_trade_no、body、total_fee、trade_type必填
-     * appid、mchid、spbill_create_ip、nonce_str不需要填入
-     * @param WxPayUnifiedOrder $inputObj
-     * @param int $timeOut
-     * @throws WxPayException
-     * @return 成功时返回，其他抛异常
-     */
-    public function unifiedOrder($type,$param) {
-        $this->trade_type = $type;
-
-        $timeOut = 6;
-        $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        //应用ID
-        $param['appid'] = $this->appid;//self::APPID;
-        //商户号
-        $param['mch_id'] = $this->mchid;//self::MCHID;
-        //随机字符串
-        $param['nonce_str'] = $this->nonce_str;
-        //商品描述
-        //$param['body'] = $goods['name'];
-        //商户订单号
-        //$param['out_trade_no'] = $goods['orderid'];
-        //总金额，单位分
-        //$param['total_fee'] = $goods['price'];
-        //终端IP
-        //$param['spbill_create_ip'] = $ext['ip'];//'180.173.208.249';
-        //通知地址
-        //$param['notify_url'] = 'http://member.qa.lookmanhua.com/notify/weixin';
-        //交易类型
-        $param['trade_type'] = $this->trade_type;
-        //签名
-        $param['sign'] = $this->makeSign($param);
-        $xml = $this->toXml($param);
-        $response = self::postXmlCurl($xml, $url, false, $timeOut);
-        $response = $this->fromXml($response);
-        if ($response['return_code'] != 'SUCCESS') {
-            $this->errno = $response['return_code'];
-            $this->errmsg = $response['return_msg'];
-            return false;
-        }
-        if($response['result_code'] != 'SUCCESS' ) {
-            $this->errno = $response['err_code'];
-            $this->errmsg = $response['err_code_des'];
-            return false;
-        }
-
-        return $response;
-        /*
-        if($type==2 || $type==4) {
-            $app['appid']=$this->appid;
-            $app['partnerid']=$this->mchid;
-            $app['prepayid']=$response['prepay_id'];
-            $app['package']='Sign=WXPay';
-            $app['noncestr']=$this->nonce_str;
-            $app['timestamp']=time();
-            $app['sign']=$this->makeSign($app);
-            return $app;
-        }
-        return $response;
-        */
-    }
+    //    //TODO
+    //    $this->appid = $config['appid'];
+    //    $this->mchid = $config['mchid'];
+    //    $this->key = $config['key'];
+    //    $this->appsecret = $config['appsecret'];
+    //}
 
     public function orderQuery($orderid) {
         $timeOut = 6;
@@ -123,7 +58,6 @@ abstract class Config extends Base {
 
         //签名
         $param['sign'] = $this->makeSign($param);
-
 
         $xml = $this->toXml($param);
         $response = self::postXmlCurl($xml, $url, false, $timeOut);
@@ -224,7 +158,7 @@ abstract class Config extends Base {
      * @param int $second url执行超时时间，默认30s
      * @throws WxPayException
      */
-    private function postXmlCurl($xml, $url, $useCert = false, $second = 30) {
+    protected function postXmlCurl($xml, $url, $useCert = false, $second = 30) {
         $ch = curl_init();
         //设置超时
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);

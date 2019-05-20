@@ -8,6 +8,9 @@
  * file that was distributed with this source code.
  */
 namespace nbcx\pay\platform;
+
+use nbcx\pay\Component;
+
 /**
  * Base
  *
@@ -16,23 +19,25 @@ namespace nbcx\pay\platform;
  * @author: collin <collin@nb.cx>
  * @date: 2019/5/9
  */
-abstract class Base {
+abstract class Base extends Component {
 
-    protected $config = [];
-    protected $request = [];
+    /**
+     * @var Component
+     */
+    protected $pay;
+
+    final public function __construct(Component $pay) {
+        $this->pay = $pay;
+    }
 
     public function config(array $config) {
-        $this->config = $config;
+        $this->pay->config($config);
     }
 
-    abstract public function get();
-
-    public function request($input) {
-        $this->request = $input;
-    }
 
     public function __get($name) {
         // TODO: Implement __get() method.
-        return isset($this->config[$name])?$this->config[$name]:null;
+        return isset($this->pay->config[$name])?$this->pay->config[$name]:null;
     }
+
 }
