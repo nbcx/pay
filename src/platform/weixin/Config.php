@@ -12,22 +12,22 @@ use nbcx\pay\platform\Base;
 abstract class Config extends Base {
 
     //APPID：绑定支付的APPID（必须配置，开户邮件中可查看）
-    public $appid;
+    //public $appid;
 
     //商户号（必须配置，开户邮件中可查看）
-    public $mchid;
+    //public $mchid;
 
     //KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
-    public $key;
+    //public $key;
 
     //公众帐号secert（仅JSAPI支付的时候需要配置， 登录公众平台，进入开发者中心可设置），
-    public $appsecret;
+    //public $appsecret;
 
 
     //随机字符串
-    public $nonce_str = '123123123122313';
+    //public $nonce_str = '123123123122313';
 
-    public $trade_type = 'app';
+    //public $trade_type = 'app';
 
     //private $config;
 
