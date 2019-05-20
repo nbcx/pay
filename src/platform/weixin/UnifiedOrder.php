@@ -44,7 +44,7 @@ class UnifiedOrder extends Config {
                 $this->trade_type='JSAPI';
                 break;
         }
-        return $this->unifiedOrder();
+        return $this->unifiedOrder($param);
     }
 
 
