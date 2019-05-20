@@ -37,7 +37,6 @@ abstract class Base extends Component {
 
     public function __get($name) {
         // TODO: Implement __get() method.
-        b("__get-$name",isset($this->pay->config[$name])?$this->pay->config[$name]:null);
         return isset($this->pay->config[$name])?$this->pay->config[$name]:null;
     }
 
