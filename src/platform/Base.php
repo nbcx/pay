@@ -40,4 +40,9 @@ abstract class Base extends Component {
         return isset($this->pay->config[$name])?$this->pay->config[$name]:null;
     }
 
+    public function __set($name, $value) {
+        // TODO: Implement __set() method.
+        $this->pay->config[$name] = $value;
+    }
+
 }
