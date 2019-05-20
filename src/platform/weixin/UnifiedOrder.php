@@ -23,13 +23,13 @@ class UnifiedOrder extends Config {
         $param = [];
         // TODO: Implement get() method.
         switch ($this->trade_type) {
-            case 'app':
+            case 'APP':
                 $this->trade_type='APP';
                 break;
-            case 'pc':
+            case 'PC':
                 $this->trade_type='NATIVE';
                 break;
-            case 'h5':
+            case 'H5':
                 $this->trade_type='MWEB';
                 $param['scene_info']= json_encode([
                     'h5_info'=>[
@@ -39,10 +39,14 @@ class UnifiedOrder extends Config {
                     ]
                 ]);
                 break;
-            case 'inapp':
+            case 'INAPP':
                 //公众号支付
                 $this->trade_type='JSAPI';
                 break;
+            default:
+                $this->errno = 'FAIL';
+                $this->pay->errmsg = 'invalid trade_type';
+                return false;
         }
         return $this->unifiedOrder($param);
     }

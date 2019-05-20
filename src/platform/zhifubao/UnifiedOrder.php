@@ -27,14 +27,14 @@ class UnifiedOrder extends Config {
             'out_trade_no' => $this->out_trade_no,//此订单号为商户唯一订单号
             'total_amount' => $this->total_amount,//保留两位小数
         ];
-        switch ($this->request['trade_type']) {
-            case 'app':
+        switch ($this->trade_type) {
+            case 'APP':
                 $result = $this->app($data);
                 break;
-            case 'pc':
+            case 'PC':
                 $result = $this->pc($data);
                 break;
-            case 'h5':
+            case 'H5':
                 $result = $this->h5($data);
                 break;
         }

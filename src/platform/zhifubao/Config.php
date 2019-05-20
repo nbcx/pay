@@ -12,13 +12,13 @@ use nbcx\pay\platform\Base;
 abstract class Config extends Base {
 
     //应用ID
-    public $appId;
+    //public $appId;
 
     //私钥文件路径
     public $rsaPrivateKeyFilePath;
 
     //私钥值
-    public $rsaPrivateKey;
+    //public $rsaPrivateKey;
 
     //网关
     public $gatewayUrl = "https://openapi.alipay.com/gateway.do";
@@ -33,10 +33,10 @@ abstract class Config extends Base {
     public $postCharset = "UTF-8";
 
     //请填写开发者私钥去头去尾去回车，一行字符串
-    public $alipayPublicKey;
+    //public $alipayPublicKey;
 
     //请填写支付宝公钥，一行字符串
-    public $alipayrsaPublicKey;
+    //public $alipayrsaPublicKey;
 
 
     public $debugInfo = false;
