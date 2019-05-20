@@ -29,7 +29,7 @@ class UnifiedOrder extends Config {
         ];
         switch ($this->trade_type) {
             case 'APP':
-                $result = $this->app($data);
+                $result = $this->sdkExecute($data);
                 break;
             case 'PC':
                 $result = $this->pc($data);
@@ -37,15 +37,44 @@ class UnifiedOrder extends Config {
             case 'H5':
                 $result = $this->h5($data);
                 break;
+            default:
+                $this->errno = 'FAIL';
+                $this->pay->errmsg = 'invalid trade_type';
+                return false;
         }
         return $result;
     }
 
-    //2&4
-    protected function app($data) {
+    /**
+     * APP支付
+     * 生成用于调用收银台SDK的字符串
+     * @param $request SDK接口的请求参数对象
+     * @return string
+     * @author guofa.tgf
+     */
+    protected function sdkExecute($goods) {
         $goods['product_code'] = 'QUICK_MSECURITY_PAY';
-        $result = $this->sdkExecute($data);
-        return $result;
+
+        $params['app_id'] = $this->appid;
+        $params['method'] = 'alipay.trade.app.pay';//$request->getApiMethodName();
+        $params['format'] = $this->format;
+        $params['sign_type'] = $this->signType;
+        $params['timestamp'] = date("Y-m-d H:i:s");
+        $params['charset'] = $this->postCharset;
+
+        $params['version'] = $this->apiVersion;//$this->checkEmpty($version) ? $this->apiVersion : $version;
+
+        $params["notify_url"] = $this->notify_url;
+
+        $params['biz_content'] = json_encode($goods);//$dict['biz_content'];
+
+        ksort($params);
+
+        $params['sign'] = $this->generateSign($params, $this->signType);
+        foreach ($params as &$value) {
+            $value = $this->characet($value, $params['charset']);
+        }
+        return http_build_query($params);
     }
 
     protected function h5($data,$ext=[]) {
@@ -57,6 +86,41 @@ class UnifiedOrder extends Config {
     protected function pc($data) {
         $this->method='alipay.trade.precreate';
         return $this->execute($data);
+    }
+
+    //生成扫码支付预付款订单
+    protected function execute($goods, $authToken = null, $appInfoAuthtoken = null) {
+        //组装系统参数
+        $sysParams["app_id"] = $this->appId;
+        $sysParams["method"] = $this->method;//'alipay.trade.precreate';//$request->getApiMethodName();
+        $sysParams["format"] = $this->format;
+        $sysParams["charset"] = $this->postCharset;
+        $sysParams["sign_type"] = $this->signType;
+        $sysParams["timestamp"] = date("Y-m-d H:i:s");
+        $sysParams["version"] = $this->apiVersion;//$iv;
+        $sysParams["notify_url"] = $this->notifyUrl;//$request->getNotifyUrl();
+
+        $sysParams["auth_token"] = $authToken;
+        $sysParams["alipay_sdk"] = $this->alipaySdkVersion;
+        $sysParams["app_auth_token"] = $appInfoAuthtoken;
+
+        //获取业务参数
+        $apiParams['biz_content'] = json_encode($goods);//$request->getApiParas();
+
+        //签名
+        $sysParams["sign"] = $this->generateSign(array_merge($apiParams, $sysParams), $this->signType);
+
+        //系统参数放入GET请求串
+        $requestUrl = $this->gatewayUrl . "?";
+        //$requestUrl = '';
+        foreach ($sysParams as $sysParamKey => $sysParamValue) {
+            $requestUrl .= "$sysParamKey=" . urlencode($this->characet($sysParamValue, $this->postCharset)) . "&";
+        }
+        $requestUrl = substr($requestUrl, 0, -1);
+
+        $resp = cPost($requestUrl, $apiParams);
+        $resp = json_decode($resp,true);
+        return $resp['alipay_trade_precreate_response'];
     }
 
     /**
