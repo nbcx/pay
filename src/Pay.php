@@ -46,7 +46,7 @@ class Pay extends Component {
         return $this;
     }
 
-    public function unifiedOrder($param) {
+    public function unifiedOrder(array $param) {
         $this->type('unifiedOrder');
         $this->config($param);
         return $this->get();

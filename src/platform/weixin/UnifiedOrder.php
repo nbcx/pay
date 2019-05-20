@@ -20,6 +20,7 @@ namespace nbcx\pay\platform\weixin;
 class UnifiedOrder extends Config {
 
     public function get() {
+        $param = [];
         // TODO: Implement get() method.
         switch ($this->request['trade_type']) {
             case 'app':
@@ -43,7 +44,7 @@ class UnifiedOrder extends Config {
                 $this->trade_type='JSAPI';
                 break;
         }
-        return $this->unifiedOrder($param);
+        return $this->unifiedOrder();
     }
 
 
@@ -84,30 +85,17 @@ class UnifiedOrder extends Config {
         $response = self::postXmlCurl($xml, $url, false, $timeOut);
         $response = $this->fromXml($response);
         if ($response['return_code'] != 'SUCCESS') {
-            $this->errno = $response['return_code'];
-            $this->errmsg = $response['return_msg'];
+            $this->pay->errno = $response['return_code'];
+            $this->pay->errmsg = $response['return_msg'];
             return false;
         }
         if($response['result_code'] != 'SUCCESS' ) {
-            $this->errno = $response['err_code'];
-            $this->errmsg = $response['err_code_des'];
+            $this->pay->errno = $response['err_code'];
+            $this->pay->errmsg = $response['err_code_des'];
             return false;
         }
 
         return $response;
-        /*
-        if($type==2 || $type==4) {
-            $app['appid']=$this->appid;
-            $app['partnerid']=$this->mchid;
-            $app['prepayid']=$response['prepay_id'];
-            $app['package']='Sign=WXPay';
-            $app['noncestr']=$this->nonce_str;
-            $app['timestamp']=time();
-            $app['sign']=$this->makeSign($app);
-            return $app;
-        }
-        return $response;
-        */
     }
 
 }
