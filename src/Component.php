@@ -23,7 +23,7 @@ abstract class Component {
 
     protected $config = [];
 
-    public function config($config) {
+    public function config(array $config) {
         $this->config = array_merge($this->config,$config);
     }
 
