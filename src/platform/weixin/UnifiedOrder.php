@@ -22,7 +22,7 @@ class UnifiedOrder extends Config {
     public function get() {
         $param = [];
         // TODO: Implement get() method.
-        switch ($this->request['trade_type']) {
+        switch ($this->trade_type) {
             case 'app':
                 $this->trade_type='APP';
                 break;
