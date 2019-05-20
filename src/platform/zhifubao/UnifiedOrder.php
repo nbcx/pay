@@ -25,7 +25,7 @@ class UnifiedOrder extends Config {
             'body' => $this->goods_name,//$goods['name']
             'subject' => $this->goods_name,
             'out_trade_no' => $this->out_trade_no,//此订单号为商户唯一订单号
-            'total_amount' => $this->total_amount,//保留两位小数
+            'total_amount' => $this->total_amount/100,//保留两位小数
         ];
         switch ($this->trade_type) {
             case 'APP':
