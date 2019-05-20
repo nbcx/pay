@@ -1,6 +1,7 @@
 <?php
 namespace nbcx\pay\platform\weixin;
 
+use nbcx\pay\platform\Base;
 
 /**
  *
@@ -26,7 +27,7 @@ abstract class Config extends Base {
     //随机字符串
     public $nonce_str = '123123123122313';
 
-    public $trade_type = 'APP';
+    public $trade_type = 'app';
 
     //private $config;
 

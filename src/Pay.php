@@ -27,7 +27,7 @@ class Pay extends Component {
 
     protected $name;
 
-    public function __construct($name,$config=[]) {
+    public function __construct($name,array $config=[]) {
         $this->name = $name;
         $this->config($config);
     }
