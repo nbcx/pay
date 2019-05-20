@@ -25,7 +25,7 @@ $result = $pay->get();
     'mchid'     => '1370xxxxxxxxx',
     'key'       => 'MIICdgIBADANBgkqhkiG9wxxxxxxxxx',
     'appsecret' => '7813490da6f1265e4901ffb8xxxxxxxxx',
-    'notify_url'=>'http://member.qa.lookmanhua.cosm/notify/weixin',
+    'notify_url'=>'http://xxxxxxxxx.com/notify/weixin',
 ]
 
 //支付宝$config值：
