@@ -123,6 +123,62 @@ class UnifiedOrder extends Config {
         return $resp['alipay_trade_precreate_response'];
     }
 
+
+    /*
+     * 页面提交执行方法
+     * @param：跳转类接口的request; $httpmethod 提交方式。两个值可选：post、get
+     * @return：构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）
+     * auther:笙默
+    */
+    public function pageExecute($goods, $ext) {
+        //组装系统参数
+        $sysParams["app_id"] = $this->appId;
+        $sysParams["version"] = $this->apiVersion;
+        $sysParams["format"] = $this->format;
+        $sysParams["sign_type"] = $this->signType;
+        $sysParams["method"] = $this->method;//$request->getApiMethodName();
+        $sysParams["timestamp"] = date("Y-m-d H:i:s");
+        $sysParams["alipay_sdk"] = $this->alipaySdkVersion;
+
+        $sysParams["prod_code"] = 'QUICK_WAP_WAY';//$request->getProdCode();
+        $sysParams["notify_url"] = $this->notifyUrl;//$request->getNotifyUrl();
+        $sysParams["return_url"] = $ext['redirect'];//$request->getReturnUrl();
+        $sysParams["charset"] = $this->postCharset;
+
+        //$sysParams["terminal_type"] = $request->getTerminalType();
+        //$sysParams["terminal_info"] = $request->getTerminalInfo();
+
+        //获取业务参数
+        $apiParams['biz_content'] = json_encode($goods);
+
+        //print_r($apiParams);
+        $totalParams = array_merge($apiParams, $sysParams);
+
+        //待签名字符串
+        $preSignStr = $this->getSignContent($totalParams);
+
+        //签名
+        $totalParams["sign"] = $this->generateSign($totalParams, $this->signType);
+
+        //拼接GET请求串
+        $requestUrl = $this->gatewayUrl . "?" . $preSignStr . "&sign=" . urlencode($totalParams["sign"]);
+        ///return $this->buildRequestForm($totalParams);
+        return $requestUrl;
+
+
+        if ("GET" == $httpmethod) {
+
+            //拼接GET请求串
+            $requestUrl = $this->gatewayUrl . "?" . $preSignStr . "&sign=" . urlencode($totalParams["sign"]);
+
+            return $requestUrl;
+        }
+        else {
+            //拼接表单字符串
+            return $this->buildRequestForm($totalParams);
+        }
+    }
+
     /**
      * @param $type 支付方式
      * @param $goods  商品信息

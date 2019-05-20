@@ -69,127 +69,6 @@ abstract class Config extends Base {
 
     protected $alipaySdkVersion = "alipay-sdk-php-20161101";
 
-    /**
-     * @param $type 支付方式
-     * @param $goods  商品信息
-     * @return string
-     */
-    public function unifiedOrder($goods,$type,$ext=null) {
-
-        $data = [
-            'body' => $goods['name'],
-            'subject' => $goods['name'],
-            'out_trade_no' => $goods['orderid'],//此订单号为商户唯一订单号
-            'total_amount' => $goods['price']/100,//保留两位小数
-        ];
-        if($type==2 || $type ==4) {
-            $goods['product_code'] = 'QUICK_MSECURITY_PAY';
-            $result = $this->sdkExecute($data);
-        }
-        if($type == 1) {
-            $this->method='alipay.trade.precreate';
-            $result = $this->execute($data);
-        }
-        if($type == 3) {
-            $this->method='alipay.trade.wap.pay';
-            $result = $this->pageExecute($data,$ext);
-        }
-        return $result;
-        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
-        $resultCode = $result->$responseNode->code;
-        if (!empty($resultCode) && $resultCode == 10000) {
-            echo "成功";
-        }
-        else {
-            echo "失败";
-        }
-    }
-
-    /**
-     * 查询订单
-     * @param $orderid 商户订单ID
-     */
-    public function orderQuery($orderid){
-        $params['app_id'] = $this->appId;
-        $params['method'] = 'alipay.trade.query';//$request->getApiMethodName();
-        $params['format'] = $this->format;
-        $params['charset'] = $this->postCharset;
-        $params['sign_type'] = $this->signType;
-        $params['timestamp'] = date("Y-m-d H:i:s");
-        $params['version'] = $this->apiVersion;
-
-        $apiParams['biz_content'] = json_encode(['out_trade_no'=>$orderid]);
-
-        //签名
-        $params["sign"] = $this->generateSign(array_merge($params, $apiParams), $this->signType);
-
-        //系统参数放入GET请求串
-        $requestUrl = $this->gatewayUrl . "?";
-
-        foreach ($params as $sysParamKey => $sysParamValue) {
-            $requestUrl .= "$sysParamKey=" . urlencode($this->characet($sysParamValue, $this->postCharset)) . "&";
-        }
-        $requestUrl = substr($requestUrl, 0, -1);
-        $resp = cPost($requestUrl, $apiParams);
-        $resp = json_decode($resp,true);
-        return $resp;
-    }
-
-
-    /*
-     * 页面提交执行方法
-     * @param：跳转类接口的request; $httpmethod 提交方式。两个值可选：post、get
-     * @return：构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）
-     * auther:笙默
-    */
-    public function pageExecute($goods, $ext) {
-        //组装系统参数
-        $sysParams["app_id"] = $this->appId;
-        $sysParams["version"] = $this->apiVersion;
-        $sysParams["format"] = $this->format;
-        $sysParams["sign_type"] = $this->signType;
-        $sysParams["method"] = $this->method;//$request->getApiMethodName();
-        $sysParams["timestamp"] = date("Y-m-d H:i:s");
-        $sysParams["alipay_sdk"] = $this->alipaySdkVersion;
-
-        $sysParams["prod_code"] = 'QUICK_WAP_WAY';//$request->getProdCode();
-        $sysParams["notify_url"] = $this->notifyUrl;//$request->getNotifyUrl();
-        $sysParams["return_url"] = $ext['redirect'];//$request->getReturnUrl();
-        $sysParams["charset"] = $this->postCharset;
-
-        //$sysParams["terminal_type"] = $request->getTerminalType();
-        //$sysParams["terminal_info"] = $request->getTerminalInfo();
-
-        //获取业务参数
-        $apiParams['biz_content'] = json_encode($goods);
-
-        //print_r($apiParams);
-        $totalParams = array_merge($apiParams, $sysParams);
-
-        //待签名字符串
-        $preSignStr = $this->getSignContent($totalParams);
-
-        //签名
-        $totalParams["sign"] = $this->generateSign($totalParams, $this->signType);
-
-        //拼接GET请求串
-        $requestUrl = $this->gatewayUrl . "?" . $preSignStr . "&sign=" . urlencode($totalParams["sign"]);
-        ///return $this->buildRequestForm($totalParams);
-        return $requestUrl;
-
-
-        if ("GET" == $httpmethod) {
-
-            //拼接GET请求串
-            $requestUrl = $this->gatewayUrl . "?" . $preSignStr . "&sign=" . urlencode($totalParams["sign"]);
-
-            return $requestUrl;
-        }
-        else {
-            //拼接表单字符串
-            return $this->buildRequestForm($totalParams);
-        }
-    }
 
     public function generateSign($params, $signType = "RSA") {
         return $this->sign($this->getSignContent($params), $signType);
@@ -201,12 +80,10 @@ abstract class Config extends Base {
 
     protected function getSignContent($params) {
         ksort($params);
-
         $stringToBeSigned = "";
         $i = 0;
         foreach ($params as $k => $v) {
             if (false === $this->checkEmpty($v) && "@" != substr($v, 0, 1)) {
-
                 // 转换成目标字符集
                 $v = $this->characet($v, $this->postCharset);
 
@@ -219,7 +96,6 @@ abstract class Config extends Base {
                 $i++;
             }
         }
-
         unset ($k, $v);
         return $stringToBeSigned;
     }
@@ -355,11 +231,9 @@ abstract class Config extends Base {
             $fileType = $this->fileCharset;
             if (strcasecmp($fileType, $targetCharset) != 0) {
                 $data = mb_convert_encoding($data, $targetCharset, $fileType);
-                //				$data = iconv($fileType, $targetCharset.'//IGNORE', $data);
+                //$data = iconv($fileType, $targetCharset.'//IGNORE', $data);
             }
         }
-
-
         return $data;
     }
 
@@ -664,7 +538,6 @@ abstract class Config extends Base {
             return null;
         }
 
-
     }
 
     function parserJSONSource($responseContent, $nodeName, $nodeIndex) {
@@ -697,7 +570,6 @@ abstract class Config extends Base {
 
 
         return $signData;
-
 
     }
 

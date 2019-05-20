@@ -41,31 +41,6 @@ abstract class Config extends Base {
     //    $this->appsecret = $config['appsecret'];
     //}
 
-    public function orderQuery($orderid) {
-        $timeOut = 6;
-        $url = "https://api.mch.weixin.qq.com/pay/orderquery";
-        //应用ID
-        $param['appid'] = $this->appid;//self::APPID;
-        //商户号
-        $param['mch_id'] = $this->mchid;//self::MCHID;
-        //随机字符串
-        $param['nonce_str'] = $this->nonce_str;
-
-        //微信订单号
-        //$param['transaction_id'] = $transaction_id;
-
-        //商户订单号
-        $param['out_trade_no'] = $orderid;
-
-        //签名
-        $param['sign'] = $this->makeSign($param);
-
-        $xml = $this->toXml($param);
-        $response = self::postXmlCurl($xml, $url, false, $timeOut);
-        $response = $this->fromXml($response);
-        return $response;
-    }
-
     public function notify($xml){
         $xml= $this->fromXml($xml);
         if(!isset($xml['sign'])) {
