@@ -21,7 +21,7 @@ abstract class Component {
     public $errno;
     public $errmsg;
 
-    protected $config = [];
+    public $config = [];
 
     public function config(array $config) {
         $this->config = array_merge($this->config,$config);
