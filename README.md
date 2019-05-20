@@ -21,10 +21,10 @@ $result = $pay->get();
 
 //微信$config值：
 [
-    'appid'     =>'wxbccf7a23f2b304bc',
-    'mchid'     => '1370158702',
-    'key'       => 'MIICdgIBADANBgkqhkiG9w0BAQEFAASC',
-    'appsecret' => '7813490da6f1265e4901ffb80afaa36f',
+    'appid'     =>'wxbccf7a23xxxxxxxxx',
+    'mchid'     => '1370xxxxxxxxx',
+    'key'       => 'MIICdgIBADANBgkqhkiG9wxxxxxxxxx',
+    'appsecret' => '7813490da6f1265e4901ffb8xxxxxxxxx',
     'notify_url'=>'http://member.qa.lookmanhua.cosm/notify/weixin',
 ]
 
