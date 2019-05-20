@@ -48,7 +48,7 @@ class UnifiedOrder extends Config {
         return $result;
     }
 
-    protected function h5($data,$ext) {
+    protected function h5($data,$ext=[]) {
         $this->method='alipay.trade.wap.pay';
         $result = $this->pageExecute($data,$ext);
         return $result;

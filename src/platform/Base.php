@@ -18,6 +18,12 @@ use nbcx\pay\Component;
  * @link https://nb.cx
  * @author: collin <collin@nb.cx>
  * @date: 2019/5/9
+ *
+ * @property  string goods_name  商品名称
+ * @property  string out_trade_no 商户订单号
+ * @property  string spbill_create_ip 支付客户端IP
+ * @property  string total_amount  总金额
+ * @property  string fee_type 币种类型
  */
 abstract class Base extends Component {
 
