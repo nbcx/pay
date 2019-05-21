@@ -27,6 +27,10 @@ class Pay extends Component {
 
     protected $name;
 
+    public $config = [
+        'fee_type' => 'CNY'
+    ];
+
     public function __construct($name,array $config=[]) {
         $this->name = $name;
         $this->config($config);
@@ -49,6 +53,14 @@ class Pay extends Component {
     public function unifiedOrder(array $param) {
         $this->type('unifiedOrder');
         $this->config($param);
+        return $this->get();
+    }
+
+    public function query($order_id) {
+        $this->type('query');
+        $this->config([
+            'order_id' => $order_id
+        ]);
         return $this->get();
     }
 

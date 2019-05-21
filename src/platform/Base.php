@@ -33,6 +33,7 @@ abstract class Base extends Component {
     protected $pay;
 
     final public function __construct(Component $pay) {
+        $pay->config($this->config);
         $this->pay = $pay;
     }
 

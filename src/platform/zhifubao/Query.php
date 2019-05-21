@@ -12,7 +12,7 @@ namespace platform\zhifubao;
 use nbcx\pay\platform\zhifubao\Config;
 
 /**
- * Query
+ * Query 查询订单
  *
  * @package platform\zhifubao
  * @link https://nb.cx
@@ -23,13 +23,6 @@ class Query extends Config {
 
     public function get() {
         // TODO: Implement get() method.
-    }
-
-    /**
-     * 查询订单
-     * @param $orderid 商户订单ID
-     */
-    public function orderQuery($orderid){
         $params['app_id'] = $this->appId;
         $params['method'] = 'alipay.trade.query';//$request->getApiMethodName();
         $params['format'] = $this->format;
@@ -38,7 +31,9 @@ class Query extends Config {
         $params['timestamp'] = date("Y-m-d H:i:s");
         $params['version'] = $this->apiVersion;
 
-        $apiParams['biz_content'] = json_encode(['out_trade_no'=>$orderid]);
+        $apiParams['biz_content'] = json_encode([
+            'out_trade_no'=>$this->order_id
+        ]);
 
         //签名
         $params["sign"] = $this->generateSign(array_merge($params, $apiParams), $this->signType);

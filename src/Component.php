@@ -21,9 +21,7 @@ abstract class Component {
     public $errno;
     public $errmsg;
 
-    public $config = [
-        'fee_type' => 'CNY'
-    ];
+    public $config = [];
 
     public function config(array $config) {
         $this->config = array_merge($this->config,$config);

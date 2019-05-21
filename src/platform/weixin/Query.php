@@ -22,11 +22,12 @@ use nbcx\pay\platform\weixin\Config;
  */
 class Query extends Config {
 
+    public $config = [
+
+    ];
+
     public function get() {
         // TODO: Implement get() method.
-    }
-
-    public function orderQuery($orderid) {
         $timeOut = 6;
         $url = "https://api.mch.weixin.qq.com/pay/orderquery";
         //应用ID
@@ -40,7 +41,7 @@ class Query extends Config {
         //$param['transaction_id'] = $transaction_id;
 
         //商户订单号
-        $param['out_trade_no'] = $orderid;
+        $param['out_trade_no'] = $this->order_id;
 
         //签名
         $param['sign'] = $this->makeSign($param);
@@ -50,5 +51,6 @@ class Query extends Config {
         $response = $this->fromXml($response);
         return $response;
     }
+
 
 }

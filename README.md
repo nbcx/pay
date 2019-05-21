@@ -36,3 +36,13 @@ $result = $pay->get();
     'alipayrsaPublicKey'  => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBxxxxxxxxxxxxx'
 ]
 ```
+
+## 查询订单
+```php
+$pay = new Pay($platform,'query',$config);
+$pay->config([
+    'order_id'=>$order_id, //订单ID
+]);
+$result = $pay->get();
+
+```
